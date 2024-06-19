@@ -1,0 +1,9 @@
+gateway:
+  auth:
+    type: dask_gateway_server.auth.BasicAuth
+  culler:
+    enabled: true
+  backend:
+    type: kubernetes
+  proxy:
+    type: dask_gateway_server.proxy.tcp.TCPProxy
