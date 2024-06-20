@@ -1,6 +1,10 @@
 from dask_gateway import Gateway
+from dask_gateway.auth import BasicAuth
 
-gateway = Gateway("http://194.12.178.4:30081")
+gateway = Gateway(
+    address="http://194.12.178.4:30081",
+    auth=BasicAuth(username="alputer", password="dummy"),
+)
 gateway.list_clusters()
 
 cluster = gateway.new_cluster()

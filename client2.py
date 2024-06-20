@@ -9,12 +9,12 @@ gateway = Gateway(
 options = gateway.cluster_options()
 
 cluster = gateway.new_cluster(
-    worker_cores=0.4,
-    worker_memory=0.3,
+    worker_cores=2,
+    worker_memory=1.2,
 )  # config2.yaml
 # cluster = gateway.new_cluster()  # config.yaml
 
-cluster.scale(10)
+cluster.scale(1)
 
 print(options)
 print(cluster)

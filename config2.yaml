@@ -123,22 +123,22 @@ gateway:
     # Note that the key name here doesn't matter. Values in the
     # `extraConfig` map are concatenated, sorted by key name.
     clusteroptions: |
-        from dask_gateway_server.options import Options, Integer, Float, String
+        from dask_gateway_server.options import Options, Integer, Float
 
-        def option_handler(options):
+        def options_handler(options):
             return {
                 "worker_cores": options.worker_cores,
-                "worker_memory": int(options.worker_memory * 2 ** 30)
+                "worker_memory": int(options.worker_memory * 2 ** 30),
             }
 
         c.Backend.cluster_options = Options(
-            Float("worker_cores", 0.2, min=0.1, max=0.5, label="Worker Cores"),
-            Float("worker_memory", 0.2, min=0.1, max=0.3, label="Worker Memory (GiB)"),
-            handler=option_handler,
+            Integer("worker_cores", default=1, min=1, max=4, label="Worker Cores"),
+            Float("worker_memory", default=1, min=1, max=8, label="Worker Memory (GiB)"),
+            handler=options_handler,
         )
 
-        c.ClusterConfig.cluster_max_cores = 4
-        c.ClusterConfig.cluster_max_memory = "2G"
+        c.ClusterConfig.cluster_max_cores = 100
+        c.ClusterConfig.cluster_max_memory = "100G"
 
 
   # backend nested configuration relates to the scheduler and worker resources
@@ -190,8 +190,8 @@ gateway:
 
       # Cores request/limit for each worker.
       cores:
-        request: 0.1
-        limit: 0.2
+        request: 0.3
+        limit: 0.6
 
       # Memory request/limit for each worker.
       memory:
