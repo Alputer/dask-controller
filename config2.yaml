@@ -20,11 +20,11 @@ gateway:
   # Resource requests/limits for the gateway-server pod.
   resources:
     requests:
-      memory: "256M"
-      cpu: 0.5
+      memory: "128M"
+      cpu: 0.1
     limits:
-      memory: "1G"
-      cpu: 1
+      memory: "256M"
+      cpu: 0.2
 
   # Path prefix to serve dask-gateway api requests under
   # This prefix will be added to all routes the gateway manages
@@ -38,7 +38,7 @@ gateway:
   image:
     name: ghcr.io/dask/dask-gateway-server
     tag: "2024.1.0"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
   # Add additional environment variables to the gateway pod
   # e.g.
@@ -128,20 +128,17 @@ gateway:
         def option_handler(options):
             return {
                 "worker_cores": options.worker_cores,
-                "worker_memory": "%fG" % options.worker_memory,
-                "image": options.image,
+                "worker_memory": int(options.worker_memory * 2 ** 30)
             }
 
         c.Backend.cluster_options = Options(
-            Float("worker_cores", 2, min=1, max=4, label="Worker Cores"),
+            Float("worker_cores", 0.2, min=0.1, max=0.5, label="Worker Cores"),
             Float("worker_memory", 0.2, min=0.1, max=0.3, label="Worker Memory (GiB)"),
-            String("image", default="daskgateway/dask-gateway:2024.1.0", label="Image"),
             handler=option_handler,
         )
 
-        c.ClusterConfig.cluster_max_cores = 80
+        c.ClusterConfig.cluster_max_cores = 4
         c.ClusterConfig.cluster_max_memory = "2G"
-        c.ClusterConfig.idle_timeout = 5
 
 
   # backend nested configuration relates to the scheduler and worker resources
@@ -151,7 +148,7 @@ gateway:
     image:
       name: ghcr.io/dask/dask-gateway
       tag: "2024.1.0"
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
 
     # Image pull secrets for a dask cluster's scheduler and worker pods
     imagePullSecrets: []
@@ -174,13 +171,13 @@ gateway:
 
       # Cores request/limit for the scheduler.
       cores:
-        request: 0.5
-        limit: 1
+        request: 0.1
+        limit: 0.2
 
       # Memory request/limit for the scheduler.
       memory:
-        request: "500M"
-        limit: "1G"
+        request: "128M"
+        limit: "256M"
 
     worker:
       # Any extra configuration for the worker pod. Sets
@@ -193,13 +190,13 @@ gateway:
 
       # Cores request/limit for each worker.
       cores:
-        request: 0.5
-        limit: 1
+        request: 0.1
+        limit: 0.2
 
       # Memory request/limit for each worker.
       memory:
-        request: "250M"
-        limit: "500M"
+        request: "128M"
+        limit: "256M"
 
       # Number of threads available for a worker. Sets
       # `c.KubeClusterConfig.worker_threads`
@@ -256,7 +253,7 @@ controller:
   image:
     name: ghcr.io/dask/dask-gateway-server
     tag: "2024.1.0"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
   # Settings for nodeSelector, affinity, and tolerations for the controller pods
   nodeSelector: {}
@@ -278,17 +275,17 @@ traefik:
   # Resource requests/limits for the proxy pods
   resources:
     requests:
-      memory: "256M"
-      cpu: 0.5
+      memory: "128M"
+      cpu: 0.1
     limits:
-      memory: "1G"
-      cpu: 1
+      memory: "256M"
+      cpu: 0.2
 
   # The image to use for the proxy pod
   image:
     name: traefik
     tag: "2.10.6"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   imagePullSecrets: []
 
   # Any additional arguments to forward to traefik
