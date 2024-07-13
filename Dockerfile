@@ -1,14 +1,6 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11.7-slim
+FROM ghcr.io/dask/dask:2024.1.0
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install Dask and Dask-Gateway
-RUN pip install --no-cache-dir dask[complete] dask-gateway
-
-COPY client.py .
-COPY client2.py .
-
-# Command to keep the container running
-CMD ["tail", "-f", "/dev/null"]
+COPY data.npy /app/
+COPY analysis.py /app/
