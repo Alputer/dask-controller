@@ -10,17 +10,24 @@ spec:
         image: dask-demo:alputer
         imagePullPolicy: Never
         volumeMounts:
-        - name: persistent-storage
-          mountPath: /app/output # this is important. Otherwise, it gives no folder error !!
+        - name: my-volume
+          mountPath: /app/output
+      #  volumeMounts:
+      #  - name: persistent-storage
+      #    mountPath: /app/output # this is important. Otherwise, it gives no folder error !!
         env:
         - name: DASK_SCHEDULER_URI
           value: ""
         command: ["/bin/sh", "-c"]
         args:
-          - export DASK_SCHEDULER_URI="10.96.42.179:8786" && exec python analysis.py
+          - export DASK_SCHEDULER_URI="10.96.227.60:8786" && exec python analysis.py
       restartPolicy: Never
       volumes:
-      - name: persistent-storage
-        persistentVolumeClaim:
-          claimName: pvc-dask-demo
+      - name: my-volume
+        hostPath:
+          path: /home/logs
+      #volumes:
+      #- name: persistent-storage
+      #  persistentVolumeClaim:
+      #    claimName: pvc-dask-demo
   backoffLimit: 4

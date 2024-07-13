@@ -1,0 +1,12 @@
+
+worker:
+  mounts:
+    volumes:
+      - name: my-volume
+        hostPath:
+          path: /home/logs
+    volumeMounts:
+      - name: my-volume
+        mountPath: /app/output
+
+ 
