@@ -14,10 +14,10 @@ spec:
           mountPath: /app/output
         env:
         - name: DASK_SCHEDULER_URI
-          value: ""
+          value: "${DASK_SCHEDULER_URI}"
         command: ["/bin/sh", "-c"]
         args:
-          - export DASK_SCHEDULER_URI="10.96.122.32:8786" && exec python demo.py
+          - exec python demo.py
       restartPolicy: Never
       volumes:
       - name: my-volume

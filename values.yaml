@@ -1,0 +1,9 @@
+worker:
+  mounts:
+    volumes:
+      - name: my-volume-dask
+        hostPath:
+          path: /home/logs
+    volumeMounts:
+      - name: my-volume-dask
+        mountPath: /app
