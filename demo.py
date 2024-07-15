@@ -12,9 +12,9 @@ import os
 
 # Code given below will be the image
 
-#DASK_SCHEDULER_URI = os.getenv("DASK_SCHEDULER_URI", "tcp://127.0.0.1:8080")
+DASK_SCHEDULER_URI = os.getenv("DASK_SCHEDULER_URI", "tcp://127.0.0.1:8080")
 
-#client = dask.distributed.Client(DASK_SCHEDULER_URI)
+client = dask.distributed.Client(DASK_SCHEDULER_URI)
 
 # Step 1: Create a delayed function to read the CSV file
 @dask.delayed
@@ -40,7 +40,7 @@ def write_csv_delayed(df, file_path):
 
 # Sample CSV file path
 input_file = 'data.csv'
-output_file = './output.csv'
+output_file = './output/output.csv'
 
 # Create delayed tasks
 delayed_df = read_csv_delayed(input_file)
