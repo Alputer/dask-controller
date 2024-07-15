@@ -19,6 +19,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ""
+  volumeName: pv-dask-demo
   resources:
     requests:
       storage: 10Mi
