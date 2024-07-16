@@ -33,14 +33,19 @@ def process_data(df):
     return result
 
 @dask.delayed
+def hello():
+    with open("./output/hey.txt", "w") as f:
+        f.write("hello world")
+
+@dask.delayed
 def write_csv_delayed(df, file_path):
     df.to_csv(file_path, index=False)
     print(f"Processed data written to {file_path}")
 
 
 # Sample CSV file path
-input_file = 'data.csv'
-output_file = './output/output.csv'
+input_file = './app/output/data.csv'
+output_file = './app/output/output.csv'
 
 # Create delayed tasks
 delayed_df = read_csv_delayed(input_file)
