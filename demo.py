@@ -7,8 +7,8 @@ import dask
 import dask.array
 import dask.delayed
 import pandas as pd
+import time
 
-# Step 1: Create a delayed function to read the CSV file
 
 from dask.distributed import Client
 
@@ -17,6 +17,7 @@ client = Client()
 
 @dask.delayed
 def read_csv_delayed(file_path):
+    import wikipedia
     return pd.read_csv(file_path)
 
 
@@ -31,12 +32,8 @@ def process_data(df):
     return result
 
 @dask.delayed
-def hello():
-    with open("./output/hey.txt", "w") as f:
-        f.write("hello world")
-
-@dask.delayed
 def write_csv_delayed(df, file_path):
+    time.sleep(20)
     df.to_csv(file_path, index=False)
     print(f"Processed data written to {file_path}")
 
@@ -49,6 +46,5 @@ output_file = './app/output/output.csv'
 delayed_df = read_csv_delayed(input_file)
 delayed_processed = process_data(delayed_df)
 delayed_write = write_csv_delayed(delayed_processed, output_file)
-
 
 compute(delayed_write)

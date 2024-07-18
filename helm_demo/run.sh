@@ -11,7 +11,5 @@ kubectl delete job dask-demo-job
 DASK_SCHEDULER_URI=$(kubectl get services dask-scheduler | awk 'NR==2 {print "tcp://" $3 ":" substr($5,0,4)}')
 export DASK_SCHEDULER_URI
 envsubst < job.yaml | kubectl apply -f -
-
-# For persistent volume
-#kubectl apply -f persistent_volume.yaml
-#kubectl apply -f job2.yaml
+sleep 5
+kubectl port-forward service/simple-job-scheduler 8787:8787
