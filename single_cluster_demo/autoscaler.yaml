@@ -1,0 +1,8 @@
+apiVersion: kubernetes.dask.org/v1
+kind: DaskAutoscaler
+metadata:
+  name: demo-autoscaler
+spec:
+  cluster: "simple"
+  minimum: 0
+  maximum: 10

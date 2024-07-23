@@ -1,0 +1,74 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dask-demo-job-1
+spec:
+  template:
+    spec:
+      containers:
+      - name: dask-demo-1
+        image: dask-demo:alputer
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: my-volume
+          mountPath: /app/output
+        env:
+        - name: DASK_SCHEDULER_URI
+          value: "${DASK_SCHEDULER_URI}"
+        command: ["/bin/sh", "-c"]
+        args: ["exec python demo.py"]
+      volumes:
+      - name: my-volume
+        hostPath:
+          path: /home/logs
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dask-demo-job-2
+spec:
+  template:
+    spec:
+      containers:
+      - name: dask-demo-2
+        image: dask-demo:alputer
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: my-volume
+          mountPath: /app/output
+        env:
+        - name: DASK_SCHEDULER_URI
+          value: "${DASK_SCHEDULER_URI}"
+        command: ["/bin/sh", "-c"]
+        args: ["exec python demo.py"]
+      volumes:
+      - name: my-volume
+        hostPath:
+          path: /home/logs
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dask-demo-job-3
+spec:
+  template:
+    spec:
+      containers:
+      - name: dask-demo-3
+        image: dask-demo:alputer
+        imagePullPolicy: Never
+        volumeMounts:
+        - name: my-volume
+          mountPath: /app/output
+        env:
+        - name: DASK_SCHEDULER_URI
+          value: "${DASK_SCHEDULER_URI}"
+        command: ["/bin/sh", "-c"]
+        args: ["exec python demo.py"]
+      volumes:
+      - name: my-volume
+        hostPath:
+          path: /home/logs
+      restartPolicy: Never
